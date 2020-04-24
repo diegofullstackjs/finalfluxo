@@ -5,12 +5,11 @@ const {
 const {validationResult} = require('express-validator')
 const jwt = require('jsonwebtoken');
 module.exports.home = async (req,res) => {
-    await Caixa.find({user_id:req.usuario.user._id})
-    .populate('user_id').then((box) => {
-         if(box)
-         {
-             return res.status(200).json(box)
-         }
+    const userCaixas = await Caixa.find({user_id:req.usuario.user._id}).exec();
+    const userCategories = await Caixa.find({user_id:req.usuario.user._id}).exec();
+    return res.status(200).json({
+        user_categories: userCategories,
+        user_caixas: userCaixas
     });
 }
 
