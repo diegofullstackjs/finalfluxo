@@ -1,5 +1,6 @@
 const UserModel = require('../models/Usuario')
 const CaixaModel = require('../models/Caixa')
+const {validationResult} = require('express-validator')
 const jwt = require('jsonwebtoken');
 module.exports.home = async (req,res) => {
     await CaixaModel.find({user_id:req.usuario.user._id})
@@ -13,7 +14,10 @@ module.exports.home = async (req,res) => {
 
 module.exports.create_a_user = async (req,res) => {
     const {email,nome,password} = req.body;
-
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
    await UserModel.create({
         nome,
         email,
