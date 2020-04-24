@@ -12,6 +12,7 @@ module.exports.home = async (req,res) => {
                         .populate('id_caixa')
                         .populate('id_user')
                         .populate('id_categorias').exec()
+
     return res.status(200).json({
         user_categories: userCategories,
         user_caixas: userCaixas,
@@ -68,4 +69,4 @@ module.exports.login_in = async (req,res) => {
                 message: "Usuario nao encontrado"
             });
         }).catch(e => console.log(e))
-}
+}   
