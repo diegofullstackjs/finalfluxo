@@ -10,5 +10,9 @@ Routes.post('/user/create',
             HomeController.create_a_user)
 Routes.post('/user/login',HomeController.login_in)
 
-Routes.post('/task/caixa/create',AuthMiddleware.autenticado,TaskController.create_a_box)
+Routes.post('/task/caixa/create',AuthMiddleware.autenticado,
+                                 TaskController.create_a_box)
+Routes.post('/task/categorias/create',
+            AuthMiddleware.autenticado,
+            TaskController.create_a_categories)
 module.exports = Routes;
