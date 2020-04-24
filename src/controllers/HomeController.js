@@ -1,14 +1,21 @@
-const UserModel = require('../models/Usuario')
-const CaixaModel = require('../models/Caixa')
+const {
+   Caixa,
+   Usuario,
+   Fluxo
+} = require('../models/index')
 const {validationResult} = require('express-validator')
 const jwt = require('jsonwebtoken');
 module.exports.home = async (req,res) => {
-    await CaixaModel.find({user_id:req.usuario.user._id})
-    .populate('user_id').then((box) => {
-         if(box)
-         {
-             return res.status(200).json(box)
-         }
+    const userCaixas = await Caixa.find({user_id:req.usuario.user._id}).exec();
+    const userCategories = await Caixa.find({user_id:req.usuario.user._id}).exec();
+    const fluxoCaixa = await Fluxo.find({id_user:req.usuario.user._id})
+                        .populate('id_caixa')
+                        .populate('id_user')
+                        .populate('id_categorias').exec()
+    return res.status(200).json({
+        user_categories: userCategories,
+        user_caixas: userCaixas,
+        fluxo: fluxoCaixa
     });
 }
 
@@ -18,7 +25,7 @@ module.exports.create_a_user = async (req,res) => {
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-   await UserModel.create({
+   await Usuario.create({
         nome,
         email,
         password,
@@ -36,7 +43,7 @@ module.exports.create_a_user = async (req,res) => {
 module.exports.login_in = async (req,res) => {
     const {email,password} = req.body;
 
-    await UserModel.findOne({email:email})
+    await Usuario.findOne({email:email})
         .then(async (user) => {
             if(user){
                 if(user.password === password)
