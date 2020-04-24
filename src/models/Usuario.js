@@ -16,9 +16,6 @@ const Usuarios = new Schema({
         type:String,
         required: true
     },
-    idade: {
-        type: Number,
-    },
     created_at: {
         type: Date,
         default: Date.now()

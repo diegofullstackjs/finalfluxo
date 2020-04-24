@@ -16,7 +16,8 @@ const caixa = new Schema({
         required:true
     },
     total_caixa: {
-        type:String
+        type:Number,
+        default: 0
     },
     create_at: {
         type:Date,
