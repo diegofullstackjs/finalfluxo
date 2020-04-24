@@ -1,15 +1,21 @@
 const {
    Caixa,
-   Usuario
+   Usuario,
+   Fluxo
 } = require('../models/index')
 const {validationResult} = require('express-validator')
 const jwt = require('jsonwebtoken');
 module.exports.home = async (req,res) => {
     const userCaixas = await Caixa.find({user_id:req.usuario.user._id}).exec();
     const userCategories = await Caixa.find({user_id:req.usuario.user._id}).exec();
+    const fluxoCaixa = await Fluxo.find({id_user:req.usuario.user._id})
+                        .populate('id_caixa')
+                        .populate('id_user')
+                        .populate('id_categorias').exec()
     return res.status(200).json({
         user_categories: userCategories,
-        user_caixas: userCaixas
+        user_caixas: userCaixas,
+        fluxo: fluxoCaixa
     });
 }
 
