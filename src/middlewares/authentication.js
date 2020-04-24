@@ -9,7 +9,7 @@ module.exports.autenticado = async (req,res,next) => {
         await jwt.verify(token,process.env.KEY,(err,usuario) => {
             if(err){
                 res.status(500).json({
-              message: 'Nao foi possivel gerar a token'});  
+              message: 'Nao foi possivel gerar a token esta errada'});  
             }
             req.usuario = usuario;
             next();
